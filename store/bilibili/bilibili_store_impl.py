@@ -18,7 +18,10 @@ from var import crawler_type_var
 
 class BiliCsvStoreImplement(AbstractStore):
     csv_store_path: str = "data/bilibili"
-
+    if os.path.exists(csv_store_path):
+        file_count =len(os.listdir(json_store_path))+1
+    else:
+        file_count=1
     def make_save_file_name(self, store_type: str) -> str:
         """
         make save file name by store type
@@ -28,7 +31,7 @@ class BiliCsvStoreImplement(AbstractStore):
         Returns: eg: data/bilibili/search_comments_20240114.csv ...
 
         """
-        return f"{self.csv_store_path}/{crawler_type_var.get()}_{store_type}_{utils.get_current_date()}.csv"
+        return f"{self.csv_store_path}/{self.file_count}_{crawler_type_var.get()}_{store_type}_{utils.get_current_date()}.csv"
 
     async def save_data_to_csv(self, save_item: Dict, store_type: str):
         """
@@ -118,7 +121,10 @@ class BiliDbStoreImplement(AbstractStore):
 class BiliJsonStoreImplement(AbstractStore):
     json_store_path: str = "data/bilibili"
     lock = asyncio.Lock()
-
+    if os.path.exists(json_store_path):
+        file_count =len(os.listdir(json_store_path))+1
+    else:
+        file_count=1
     def make_save_file_name(self, store_type: str) -> str:
         """
         make save file name by store type
@@ -128,7 +134,7 @@ class BiliJsonStoreImplement(AbstractStore):
         Returns:
 
         """
-        return f"{self.json_store_path}/{crawler_type_var.get()}_{store_type}_{utils.get_current_date()}.json"
+        return f"{self.json_store_path}/{self.file_count}_{crawler_type_var.get()}_{store_type}_{utils.get_current_date()}.json"
 
     async def save_data_to_json(self, save_item: Dict, store_type: str):
         """
